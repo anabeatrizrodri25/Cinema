@@ -164,7 +164,7 @@ const App = () => {
               </button>
             </div>
             <div className={`success-message ${showSuccess ? 'show' : ''}`} data-testid="success-message">
-              ❤️ Aaah, que bom! ❤️
+              ❤️
             </div>
             <div className="post-it" data-testid="post-it-note">
               Eu sei que a sua rotina é corrida, mas o convite está feito, vou deixar você me avisar o dia... Mas só se quiser ir, prometo que não vou ficar magoado
