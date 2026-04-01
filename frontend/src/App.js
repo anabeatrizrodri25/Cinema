@@ -25,14 +25,12 @@ const App = () => {
   const celebrate = () => {
     setShowSuccess(true);
     
-    // Create confetti
     for (let i = 0; i < 50; i++) {
       setTimeout(() => {
         createConfetti();
       }, i * 30);
     }
     
-    // Create hearts
     for (let i = 0; i < 15; i++) {
       setTimeout(() => {
         createHeart();
@@ -60,7 +58,7 @@ const App = () => {
   const createHeart = () => {
     const heart = document.createElement('div');
     heart.classList.add('heart');
-    heart.textContent = '❤️';
+    heart.textContent = '\u2764\ufe0f';
     heart.style.left = (Math.random() * (window.innerWidth - 50)) + 'px';
     heart.style.bottom = '0px';
     
@@ -132,7 +130,7 @@ const App = () => {
               />
             </div>
             <p className="text-content" data-testid="screen3-text">
-              Mas eu prometo que vai ser um bom filme, e se for ruim a gente fica conversando o filme todo, e eu ainda deixo você tirar uma soneca durante o filme
+              E se o filme for ruim, a gente fica conversando o filme todo, e eu ainda deixo você tirar uma soneca durante ele...
             </p>
             <div className="button-container">
               <button className="btn btn-next" onClick={() => goToScreen(4)} data-testid="btn-next-screen3">Avançar →</button>
