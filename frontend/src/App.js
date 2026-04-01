@@ -130,7 +130,7 @@ const App = () => {
               />
             </div>
             <p className="text-content" data-testid="screen3-text">
-              E se o filme for ruim, a gente fica conversando o filme todo, e eu ainda deixo você tirar uma soneca durante ele...
+              E se for ruim, a gente conversa o filme todo, e eu ainda deixo você tirar uma soneca durante o filme
             </p>
             <div className="button-container">
               <button className="btn btn-next" onClick={() => goToScreen(4)} data-testid="btn-next-screen3">Avançar →</button>
@@ -160,9 +160,6 @@ const App = () => {
               >
                 Não tenho
               </button>
-            </div>
-            <div className={`success-message ${showSuccess ? 'show' : ''}`} data-testid="success-message">
-              ❤️
             </div>
             <div className="post-it" data-testid="post-it-note">
               Eu sei que a sua rotina é corrida, mas o convite está feito, vou deixar você me avisar o dia... Mas só se quiser ir, prometo que não vou ficar magoado
