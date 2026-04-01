@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite Especial 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a0e1e 0%, #2d1b2e 50%, #1a0e1e 100%);
+            color: #f5f5f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) translateY(0);
+        }
+
+        .screen.slide-out-left {
+            transform: translate(-50%, -50%) translateX(-100px);
+            opacity: 0;
+        }
+
+        .screen.slide-in-right {
+            transform: translate(-50%, -50%) translateX(100px);
+            opacity: 0;
+        }
+
+        .screen-content {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 182, 193, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 280px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffb6c1 0%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.4;
+        }
+
+        .text-content {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            text-align: center;
+            margin-bottom: 30px;
+            color: #e8d5e8;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff9eb5 100%);
+            color: #2d1b2e;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            color: #e8d5e8;
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            position: absolute;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #2d1b2e;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            min-width: 140px;
+        }
+
+        .post-it {
+            background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+            color: #5d4037;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            position: relative;
+            transform: rotate(-1deg);
+            border-top: 20px solid rgba(255, 235, 59, 0.3);
+        }
+
+        .post-it::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background: rgba(255, 224, 130, 0.5);
+            border-radius: 2px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffb6c1;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 1000;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 30px;
+            animation: heart-float 4s ease-in forwards;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        @keyframes heart-float {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-200px) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-400px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .success-message {
+            text-align: center;
+            font-size: 3rem;
+            color: #ffb6c1;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .success-message.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .screen-content {
+                padding: 30px 20px;
+            }
+
+            .image-container {
+                height: 220px;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 0.95rem;
+            }
+
+            .post-it {
+                font-size: 1rem;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Screen 1 -->
+        <div class="screen active" id="screen1">
+            <div class="screen-content">
+                <div class="image-container">
+                    <img src="https://customer-assets.emergentagent.com/job_efd1aa61-243b-4311-99b2-5c971d65bdc2/artifacts/mk8tixig_cineflix.webp" alt="Cinema" data-testid="cinema-image">
+                </div>
+                <h1 data-testid="screen1-title">Byanca Eduarda...</h1>
+                <p class="text-content" data-testid="screen1-text">Vamos cineminha comigo?</p>
+                <div class="button-container">
+                    <button class="btn btn-yes" onclick="goToScreen(2)" data-testid="btn-yes-screen1">Sim</button>
+                    <button class="btn btn-no" id="btnNo1" onmouseover="moveButton(this)" onclick="goToScreen(2)" data-testid="btn-no-screen1">Não</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2 -->
+        <div class="screen" id="screen2">
+            <div class="screen-content">
+                <div class="image-container">
+                    <img src="https://customer-assets.emergentagent.com/job_efd1aa61-243b-4311-99b2-5c971d65bdc2/artifacts/a3qgixqg_jogos%20vorazes11.jpg" alt="Jogos Vorazes" data-testid="hunger-games-image">
+                </div>
+                <p class="text-content" data-testid="screen2-text">Não é jogos vorazes, mas eu prometo que vai ser um bom filme...</p>
+                <div class="button-container">
+                    <button class="btn btn-next" onclick="goToScreen(3)" data-testid="btn-next-screen2">Avançar →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3 -->
+        <div class="screen" id="screen3">
+            <div class="screen-content">
+                <div class="image-container">
+                    <img src="https://customer-assets.emergentagent.com/job_efd1aa61-243b-4311-99b2-5c971d65bdc2/artifacts/kknkqvxp_devorador.jpg" alt="Devorador de Estrelas" data-testid="stareater-image">
+                </div>
+                <p class="text-content" data-testid="screen3-text">E se for ruim, a gente conversa o filme todo, e eu ainda deixo você tirar uma soneca durante o filme</p>
+                <div class="button-container">
+                    <button class="btn btn-next" onclick="goToScreen(4)" data-testid="btn-next-screen3">Avançar →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 4 (Final) -->
+        <div class="screen" id="screen4">
+            <div class="screen-content">
+                <h1 data-testid="screen4-title">Só eu tenho saudadessss</h1>
+                <div class="image-container">
+                    <img src="https://customer-assets.emergentagent.com/job_efd1aa61-243b-4311-99b2-5c971d65bdc2/artifacts/atnk90g6_Captura%20de%20tela%202026-03-31%20221732.png" alt="Flork" data-testid="flork-image">
+                </div>
+                <div class="button-container">
+                    <button class="btn btn-yes" onclick="celebrate()" data-testid="btn-yes-final">Eu também tenho!</button>
+                    <button class="btn btn-no" id="btnNo2" onmouseover="moveButton(this)" data-testid="btn-no-final">Não tenho</button>
+                </div>
+                <div class="post-it" data-testid="post-it-note">
+                    Eu sei que a sua rotina é corrida, mas o convite está feito, vou deixar você me avisar o dia... Mas só se quiser ir, prometo que não vou ficar magoado
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 1;
+
+        function goToScreen(screenNumber) {
+            const current = document.getElementById(`screen${currentScreen}`);
+            const next = document.getElementById(`screen${screenNumber}`);
+
+            current.classList.add('slide-out-left');
+            current.classList.remove('active');
+
+            next.classList.add('slide-in-right');
+            
+            setTimeout(() => {
+                next.classList.remove('slide-in-right');
+                next.classList.add('active');
+                current.classList.remove('slide-out-left');
+            }, 50);
+
+            currentScreen = screenNumber;
+        }
+
+        function moveButton(button) {
+            const container = button.closest('.screen-content');
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = button.getBoundingClientRect();
+
+            const maxX = containerRect.width - buttonRect.width - 60;
+            const maxY = containerRect.height - buttonRect.height - 60;
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            button.style.position = 'absolute';
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+        }
+
+        function celebrate() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createConfetti();
+                }, i * 30);
+            }
+
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 200);
+            }
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            
+            const colors = ['#ffb6c1', '#ffd700', '#ff69b4', '#ffa07a', '#98fb98'];
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-10px';
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = (Math.random() * (window.innerWidth - 50)) + 'px';
+            heart.style.bottom = '0px';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const noButtons = document.querySelectorAll('.btn-no');
+            noButtons.forEach(button => {
+                button.addEventListener('touchstart', function(e) {
+                    moveButton(this);
+                    e.preventDefault();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
